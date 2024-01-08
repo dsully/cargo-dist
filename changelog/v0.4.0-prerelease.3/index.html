@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" id="oranda" class="dark axo">
+  <head>
+    <title>cargo-dist</title>
+    
+    
+      <link rel="icon" href="/cargo-dist/favicon.ico" />
+    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+      <meta name="description" content="Shippable application packaging for Rust" />
+      <meta property="og:description" content="Shippable application packaging for Rust" />
+    
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="cargo-dist" />
+    
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta property="og:image" content="https://www.axo.dev/meta_small.jpeg" />
+    
+    
+      <meta property="og:image:alt" content="axo" />
+    
+    
+      <meta name="twitter:creator" content="@axodotdev" />
+      <meta name="twitter:site" content="@axodotdev" />
+    
+    <meta http-equiv="Permissions-Policy" content="interest-cohort=()" />
+    <link rel="stylesheet" href="/cargo-dist/oranda-v0.6.1.css" />
+    
+    
+  </head>
+  <body>
+    <div class="container">
+      <div class="page-body">
+        
+          <div class="repo_banner">
+            <a href="https://github.com/axodotdev/cargo-dist">
+              <div class="github-icon" aria-hidden="true"></div>
+              Check out our GitHub!
+            </a>
+          </div>
+        
+
+        <main>
+          <header>
+            
+            <h1 class="title">cargo-dist</h1>
+            
+  <nav class="nav">
+    <ul>
+      <li><a href="/cargo-dist/">Home</a></li>
+
+      
+
+      
+        <li><a href="/cargo-dist/artifacts/">Install</a></li>
+      
+
+      
+        <li><a href="/cargo-dist/book/">Docs</a></li>
+      
+
+      
+
+      
+        <li><a href="/cargo-dist/changelog/">Changelog</a></li>
+      
+    </ul>
+  </nav>
+
+          </header>
+
+          
+  <div>
+    <h1>Version 0.4.0-prerelease.3</h1>
+    <div class="releases-body">
+      
+      
+      <section class="release pre-release ">
+  
+  <div class="release-info">
+    <span class="flex items-center gap-2">
+      <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor' class='w-6 h-6'>
+    <path stroke-linecap='round' stroke-linejoin='round' d='M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z' />
+    <path stroke-linecap='round' stroke-linejoin='round' d='M6 6h.008v.008H6V6z' /></svg>
+      v0.4.0-prerelease.3
+    </span>
+    <span class="flex items-center gap-2">
+      
+        <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor' class='w-6 h-6'><path stroke-linecap='round' stroke-linejoin='round' d='M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5' /></svg>
+        Oct 23 2023 at 23:48 UTC
+      
+    </span>
+  </div>
+  <div class="release-body">
+    <p>This release contains several major features related to package dependencies. cargo-dist can now install dependencies for you in CI, ensure your users have those dependencies in their installers, and provide you insights into what external libraries your package links against! It also enables support for statically-built musl binaries on Linux.</p>
+<h2>Features</h2>
+<h3>Install custom dependencies</h3>
+<p>Way back in our <a href="https://blog.axo.dev/2023/02/cargo-dist" rel="noopener noreferrer">very first blog post</a>, we wrote about how users could customize the GitHub CI scripts we output to install custom dependencies. As of cargo-dist 0.4.0, you won't need to do that anymore! System dependencies — that is, dependencies installed via the system's package manager instead of <code>cargo</code> — can now be specified in your cargo-dist config in <code>Cargo.toml</code> using a syntax very similar to how your <code>cargo</code> dependencies are specified. For example:</p>
+<pre style="background-color:#263238;"><span style="color:#89ddff;">[workspace.metadata.dist.dependencies.homebrew]
+</span><span style="color:#f07178;">cmake </span><span style="color:#89ddff;">= { </span><span style="color:#f07178;">targets </span><span style="color:#89ddff;">= ["</span><span style="color:#c3e88d;">x86_64-apple-darwin</span><span style="color:#89ddff;">"] }
+</span><span style="color:#f07178;">libcue </span><span style="color:#89ddff;">= "</span><span style="color:#c3e88d;">2.2.1</span><span style="color:#89ddff;">"
+</span><span style="color:#eeffff;">
+</span><span style="color:#89ddff;">[workspace.metadata.dist.dependencies.apt]
+</span><span style="color:#f07178;">cmake </span><span style="color:#89ddff;">= '</span><span style="color:#c3e88d;">*</span><span style="color:#89ddff;">'
+</span><span style="color:#f07178;">libcue-dev </span><span style="color:#89ddff;">= { </span><span style="color:#f07178;">version </span><span style="color:#89ddff;">= "</span><span style="color:#c3e88d;">2.2.1-2</span><span style="color:#89ddff;">" }
+</span></pre>
+
+<p>For more information, see the <a href="https://opensource.axo.dev/cargo-dist/book/reference/config.html#dependencies" rel="noopener noreferrer">documentation</a>.</p>
+<ul>
+<li>impl
+<ul>
+<li>@mistydemeo <a href="https://github.com/axodotdev/cargo-dist/pull/428" rel="noopener noreferrer">initial impl</a></li>
+<li>@mistydemeo <a href="https://github.com/axodotdev/cargo-dist/pull/504" rel="noopener noreferrer">improve Homebrew integration</a></li>
+</ul>
+</li>
+</ul>
+<h3>Find out what your builds linked against</h3>
+<p>Complementing the ability to specify system dependencies, we've added a new feature that lets you tell which libraries your Rust programs have dynamically linked against. While most Rust software is statically linked, installing external dependencies may mean that your software links against something on the system; you can visualize which libraries your software uses, and which packages they come from, by viewing the output of the build step in CI.</p>
+<p>In addition, cargo-dist now uses this information to choose which dependencies to specify when building system package manager installers such as a Homebrew formula. If cargo-dist detects that your binary links against a package provided by Homebrew, it will ensure that a user who <code>brew install</code>s your package will also get that other package.</p>
+<p>This feature has full support for macOS and Linux. On Windows, we're not able to list which package a system library comes.</p>
+<ul>
+<li>impl
+<ul>
+<li>@mistydemeo <a href="https://github.com/axodotdev/cargo-dist/pull/426" rel="noopener noreferrer">initial impl</a></li>
+<li>@mistydemeo <a href="https://github.com/axodotdev/cargo-dist/pull/475" rel="noopener noreferrer">infer dependencies via linkage</a></li>
+<li>@mistydemeo <a href="https://github.com/axodotdev/cargo-dist/pull/474" rel="noopener noreferrer">fetch full name of Homebrew tap</a></li>
+<li>@mistydemeo <a href="https://github.com/axodotdev/cargo-dist/pull/495" rel="noopener noreferrer">improve apt package resolution</a></li>
+</ul>
+</li>
+</ul>
+<h3>musl support</h3>
+<p>This release adds support for a long-requested feature, creating Linux binaries statically linked against musl instead of glibc. These can be enabled adding the <code>x86_64-unknown-linux-musl</code> target triple to your list of desired targets.</p>
+<p>Note that because these binaries are statically linked, they cannot dynamically link against any other C libraries — including C libraries installed using the system dependency feature mentioned above. If your software links against system libraries, please ensure that a static library is available to the build.</p>
+<ul>
+<li>impl
+<ul>
+<li>@mistydemeo <a href="https://github.com/axodotdev/cargo-dist/pull/483" rel="noopener noreferrer">initial impl</a></li>
+<li>@gankra + @mistydemeo <a href="https://github.com/axodotdev/cargo-dist/pull/497" rel="noopener noreferrer">use musl binaries in installers</a></li>
+</ul>
+</li>
+</ul>
+<h3>msvc-crt-static opt-out</h3>
+<p>cargo-dist has <a href="https://github.com/rust-lang/rfcs/blob/master/text/1721-crt-static.md" rel="noopener noreferrer">always forced +crt-static on, as it is considered more correct for targetting Windows with the typical statically linked Rust binary</a>. However with the introduction of initial support for chocolatey as a system package manager, it's now very easy for our users to dynamically link other DLLs. Once you do, <a href="https://github.com/axodotdev/cargo-dist/issues/496" rel="noopener noreferrer">it once again becomes more correct to dynamically link the windows crt, and to use systems like Visual C(++) Redistributables</a>.</p>
+<p>Although we <a href="https://github.com/axodotdev/cargo-dist/issues/496" rel="noopener noreferrer">would like to teach cargo-dist to handle redistributables for you</a>, we're starting with a simple escape hatch: if you set <code>msvc-crt-static = false</code> in <code>[workspace.metadata.dist]</code>, we'll revert to the typical Rust behaviour of dynamically linking the CRT.</p>
+<ul>
+<li>@gankra <a href="https://github.com/axodotdev/cargo-dist/pull/507" rel="noopener noreferrer">impl</a></li>
+<li><a href="https://opensource.axo.dev/cargo-dist/book/reference/config.html#msvc-crt-static" rel="noopener noreferrer">docs</a></li>
+</ul>
+
+  </div>
+</section>
+    </div>
+  </div>
+
+        </main>
+      </div>
+
+      <footer>
+        
+          <a href="https://github.com/axodotdev/cargo-dist"><div class="github-icon" aria-hidden="true"></div></a>
+        
+        <span>
+          cargo-dist, MIT OR Apache-2.0
+        </span>
+      </footer>
+    </div>
+
+    
+      <script defer="true" data-domain="opensource.axo.dev" src="https://plausible.io/js/script.js"></script>
+    
+    
+
+    
+  </body>
+</html>

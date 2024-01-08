@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" id="oranda" class="dark axo">
+  <head>
+    <title>cargo-dist</title>
+    
+    
+      <link rel="icon" href="/cargo-dist/favicon.ico" />
+    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+      <meta name="description" content="Shippable application packaging for Rust" />
+      <meta property="og:description" content="Shippable application packaging for Rust" />
+    
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="cargo-dist" />
+    
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta property="og:image" content="https://www.axo.dev/meta_small.jpeg" />
+    
+    
+      <meta property="og:image:alt" content="axo" />
+    
+    
+      <meta name="twitter:creator" content="@axodotdev" />
+      <meta name="twitter:site" content="@axodotdev" />
+    
+    <meta http-equiv="Permissions-Policy" content="interest-cohort=()" />
+    <link rel="stylesheet" href="/cargo-dist/oranda-v0.6.1.css" />
+    
+    
+  </head>
+  <body>
+    <div class="container">
+      <div class="page-body">
+        
+          <div class="repo_banner">
+            <a href="https://github.com/axodotdev/cargo-dist">
+              <div class="github-icon" aria-hidden="true"></div>
+              Check out our GitHub!
+            </a>
+          </div>
+        
+
+        <main>
+          <header>
+            
+            <h1 class="title">cargo-dist</h1>
+            
+  <nav class="nav">
+    <ul>
+      <li><a href="/cargo-dist/">Home</a></li>
+
+      
+
+      
+        <li><a href="/cargo-dist/artifacts/">Install</a></li>
+      
+
+      
+        <li><a href="/cargo-dist/book/">Docs</a></li>
+      
+
+      
+
+      
+        <li><a href="/cargo-dist/changelog/">Changelog</a></li>
+      
+    </ul>
+  </nav>
+
+          </header>
+
+          
+  <div>
+    <h1>Version 0.6.0-prerelease.2</h1>
+    <div class="releases-body">
+      
+      
+      <section class="release pre-release ">
+  
+  <div class="release-info">
+    <span class="flex items-center gap-2">
+      <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor' class='w-6 h-6'>
+    <path stroke-linecap='round' stroke-linejoin='round' d='M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z' />
+    <path stroke-linecap='round' stroke-linejoin='round' d='M6 6h.008v.008H6V6z' /></svg>
+      v0.6.0-prerelease.2
+    </span>
+    <span class="flex items-center gap-2">
+      
+        <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor' class='w-6 h-6'><path stroke-linecap='round' stroke-linejoin='round' d='M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5' /></svg>
+        Dec  6 2023 at 21:10 UTC
+      
+    </span>
+  </div>
+  <div class="release-body">
+    <p>The headlining features of this release are:</p>
+<ul>
+<li>Support for specifying arbitrary GitHub Actions Runners</li>
+<li>The ability to build and upload extra artifacts along side your main build</li>
+</ul>
+<p>We also now distribute aarch64 Linux binaries, which makes it easier to use cargo-dist to build software on aarch64 hosts.</p>
+<h2>Features</h2>
+<h3>Custom Runners in GitHub Actions</h3>
+<p>This adds support for specifying which runners to use in GitHub CI. This is useful in order to allow cargo-dist to use paid runners, rather than the free runners it defaults to, and to force Linux builds to use a newer version of Ubuntu. By using paid runners, it's also possible to create builds running on ARM64 hosts.</p>
+<ul>
+<li>impl @milesj <a href="https://github.com/axodotdev/cargo-dist/pull/614" rel="noopener noreferrer">Support custom github runners (and arm64)</a></li>
+</ul>
+<p>Thanks to @milesj for contributing this!</p>
+<h3>Build and Host Extra Artifacts</h3>
+<p>This feature makes it possible to build and upload extra artifacts beyond what the primary build produces. For example, cargo-dist uses this to build and upload its <code>dist-manifest-schema.json</code> to each release. You can use this feature to help build and upload docs, manage extra assets for your release, and more.</p>
+<ul>
+<li>impl @mistydemeo <a href="https://github.com/axodotdev/cargo-dist/pull/613" rel="noopener noreferrer">feat: extra build artifacts</a></li>
+</ul>
+<h3>Generic Builds Now Set CC/CXX Environment Variables</h3>
+<p>In generic builds, the <code>CC</code> and <code>CXX</code> environment variables are now set to platform-appropriate compilers. This is mainly applicable to software written in C and C++.</p>
+<ul>
+<li>impl @mistydemeo <a href="https://github.com/axodotdev/cargo-dist/pull/616" rel="noopener noreferrer">feat: set CC/CXX in generic builds</a></li>
+</ul>
+<h3>Installer improvements</h3>
+<p>The installer now updates additional shell configuration files, ensuring that users are able to use your software after installing. The installer now also respects the <code>ZDOTDIR</code> configuration variable when run in the zsh shell.</p>
+<ul>
+<li>impl @mistydemeo
+<ul>
+<li><a href="https://github.com/axodotdev/cargo-dist/pull/555" rel="noopener noreferrer">feat(installer): add additional shell config</a></li>
+<li><a href="https://github.com/axodotdev/cargo-dist/pull/641" rel="noopener noreferrer">fix(installer): only print source once</a></li>
+<li><a href="https://github.com/axodotdev/cargo-dist/pull/640" rel="noopener noreferrer">fix: handle unset ZDOTDIR better</a></li>
+</ul>
+</li>
+</ul>
+<h2>Improvements</h2>
+<h3>Generic build output</h3>
+<p>stdout from generic build tasks is now merged with stderr at the time the job is run instead of printed separately after the build completes.</p>
+<ul>
+<li>impl @mistydemeo <a href="https://github.com/axodotdev/cargo-dist/pull/649" rel="noopener noreferrer">feat(generic): adjust stdout=&gt;stderr redirect</a></li>
+</ul>
+<h2>Fixes</h2>
+<h3>"Broken pipe" message in install script</h3>
+<p>Fixes an issue where the installer script could report a spurious "broken pipe" message in Linux. Note that this didn't affect the installer's behaviour; it still worked as expected.</p>
+<ul>
+<li>impl @rotu <a href="https://github.com/axodotdev/cargo-dist/pull/627" rel="noopener noreferrer">Fix ldd broken pipe error</a></li>
+</ul>
+<h3>Better installation failure handling in CI</h3>
+<p>In the rare case that installing cargo-dist failed in CI, the build would formerly continue anyway and fail in a more confusing way. This has been corrected so that the build now fails immediately.</p>
+<ul>
+<li>impl @mistydemeo <a href="https://github.com/axodotdev/cargo-dist/pull/618" rel="noopener noreferrer">fix(ci): fail fast if installer is missing</a></li>
+</ul>
+<h3>Source tarball fixes</h3>
+<p>Generating source tarballs will now be skipped if the workspace being built isn't a git repository. It will also be skipped if git isn't installed.</p>
+<ul>
+<li>impl @mistydemeo
+<ul>
+<li><a href="https://github.com/axodotdev/cargo-dist/pull/648" rel="noopener noreferrer">fix: check for git presence before calling</a></li>
+<li><a href="https://github.com/axodotdev/cargo-dist/pull/648" rel="noopener noreferrer">fix: check for git presence before calling</a></li>
+</ul>
+</li>
+</ul>
+<h3>Improved error reporting in Powershell installer</h3>
+<p>The Windows Powershell installer now provides better error output on the terminal.</p>
+<ul>
+<li>impl @mistydemeo + @gankra <a href="https://github.com/axodotdev/cargo-dist/pull/651" rel="noopener noreferrer">fix(powershell): replace errors with throw</a></li>
+</ul>
+
+  </div>
+</section>
+    </div>
+  </div>
+
+        </main>
+      </div>
+
+      <footer>
+        
+          <a href="https://github.com/axodotdev/cargo-dist"><div class="github-icon" aria-hidden="true"></div></a>
+        
+        <span>
+          cargo-dist, MIT OR Apache-2.0
+        </span>
+      </footer>
+    </div>
+
+    
+      <script defer="true" data-domain="opensource.axo.dev" src="https://plausible.io/js/script.js"></script>
+    
+    
+
+    
+  </body>
+</html>

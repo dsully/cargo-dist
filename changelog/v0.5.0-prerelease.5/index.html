@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" id="oranda" class="dark axo">
+  <head>
+    <title>cargo-dist</title>
+    
+    
+      <link rel="icon" href="/cargo-dist/favicon.ico" />
+    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+      <meta name="description" content="Shippable application packaging for Rust" />
+      <meta property="og:description" content="Shippable application packaging for Rust" />
+    
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="cargo-dist" />
+    
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta property="og:image" content="https://www.axo.dev/meta_small.jpeg" />
+    
+    
+      <meta property="og:image:alt" content="axo" />
+    
+    
+      <meta name="twitter:creator" content="@axodotdev" />
+      <meta name="twitter:site" content="@axodotdev" />
+    
+    <meta http-equiv="Permissions-Policy" content="interest-cohort=()" />
+    <link rel="stylesheet" href="/cargo-dist/oranda-v0.6.1.css" />
+    
+    
+  </head>
+  <body>
+    <div class="container">
+      <div class="page-body">
+        
+          <div class="repo_banner">
+            <a href="https://github.com/axodotdev/cargo-dist">
+              <div class="github-icon" aria-hidden="true"></div>
+              Check out our GitHub!
+            </a>
+          </div>
+        
+
+        <main>
+          <header>
+            
+            <h1 class="title">cargo-dist</h1>
+            
+  <nav class="nav">
+    <ul>
+      <li><a href="/cargo-dist/">Home</a></li>
+
+      
+
+      
+        <li><a href="/cargo-dist/artifacts/">Install</a></li>
+      
+
+      
+        <li><a href="/cargo-dist/book/">Docs</a></li>
+      
+
+      
+
+      
+        <li><a href="/cargo-dist/changelog/">Changelog</a></li>
+      
+    </ul>
+  </nav>
+
+          </header>
+
+          
+  <div>
+    <h1>Version 0.5.0-prerelease.5</h1>
+    <div class="releases-body">
+      
+      
+      <section class="release pre-release ">
+  
+  <div class="release-info">
+    <span class="flex items-center gap-2">
+      <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor' class='w-6 h-6'>
+    <path stroke-linecap='round' stroke-linejoin='round' d='M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z' />
+    <path stroke-linecap='round' stroke-linejoin='round' d='M6 6h.008v.008H6V6z' /></svg>
+      v0.5.0-prerelease.5
+    </span>
+    <span class="flex items-center gap-2">
+      
+        <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor' class='w-6 h-6'><path stroke-linecap='round' stroke-linejoin='round' d='M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5' /></svg>
+        Nov 21 2023 at 19:07 UTC
+      
+    </span>
+  </div>
+  <div class="release-body">
+    <p>This release was probably going to be several releases, but everything got finished at the same time, so here's a Mega Release!</p>
+<p>The headline features are:</p>
+<ul>
+<li>New Support For Axo Releases, As An Alternative To Github Releases (Launching Soon™)</li>
+<li>New Support For Generic Build Steps, In Any Language (Experimental)</li>
+<li>Significantly Improved MSI Installer Support</li>
+</ul>
+<h2>Features</h2>
+<h3>Axo Releases</h3>
+<p>Axo Releases users can now enable builtin cargo-dist support by setting</p>
+<p><code>hosting = ["axodotdev"]</code></p>
+<p>in their <code>[workspace.metadata.dist]</code>.</p>
+<p>To sign up for the Axo Releases closed beta, go to <a href="https://dash.axo.dev/" rel="noopener noreferrer">https://dash.axo.dev/</a></p>
+<p>You can ask for more details by <a href="https://discord.gg/ECnWuUUXQk" rel="noopener noreferrer">joining our discord</a> or sending a message to <code>hello@axo.dev</code>!</p>
+<p>Axo Releases has a more robust pipelined model for creating and hosting a release, which more
+closely matches the actual design of cargo-dist. But since we'd only ever supported Github Releases,
+some significant internal reckoning was required.</p>
+<p>This reckoning primarily appears in the existence of the new "cargo dist host" subcommand, which
+was created to make "side-effectful networking" explicit, instead of riddling several random commands
+with various --dry-run flags.</p>
+<p><code>host</code> takes several --steps:</p>
+<ul>
+<li>create: ask Axo Releases to create hosting for the Apps we want to publish</li>
+<li>upload: upload built Artifacts to the hosting that <code>create</code> made</li>
+<li>release: create Releases for the hosted artifacts, making perma-urls like /v1.0.0/ live</li>
+<li>announce: announce all the Releases, wiring them into "list all releases" and "latest release" endpoints</li>
+<li>check: equivalent to <code>create</code> but just checks that authentication is properly setup, without side-effects</li>
+</ul>
+<p>The distinction between upload, release, and announce in particular lets us provide a more
+reliable/transactional release process -- we can make the hosting live, publish to package managers,
+and <em>then</em> update URLs like /latest/ once everything works, instead of racily doing it all
+at once and having to frantically hack things back to normal when something weird happens.
+It should also make it possible for us to provide features like Release/PR Previews.</p>
+<ul>
+<li>docs
+<ul>
+<li><a href="https://opensource.axo.dev/cargo-dist/book/reference/config.html#hosting" rel="noopener noreferrer">hosting config</a></li>
+</ul>
+</li>
+<li>impl
+<ul>
+<li>@gankra <a href="https://github.com/axodotdev/cargo-dist/pull/546" rel="noopener noreferrer">preparatory refactor</a></li>
+<li>@gankra <a href="https://github.com/axodotdev/gazenot" rel="noopener noreferrer">create gazenot client library</a></li>
+<li>@mistydemeo <a href="https://github.com/axodotdev/cargo-dist/pull/567" rel="noopener noreferrer">break tag parsing into "axotag" crate</a></li>
+<li>@gankra <a href="https://github.com/axodotdev/cargo-dist/pull/586" rel="noopener noreferrer">properly set announcement body for abyss</a></li>
+<li>@mistydemeo <a href="https://github.com/axodotdev/cargo-dist/pull/600" rel="noopener noreferrer">add a comment about Axo Releases beta</a></li>
+<li>@gankra <a href="https://github.com/axodotdev/cargo-dist/pull/596" rel="noopener noreferrer">cleanup github releases / ci contents</a></li>
+</ul>
+</li>
+</ul>
+<h3>Generic Builds</h3>
+<p>0.5.0 contains experimental support for building non-cargo-based projects. These can be in any language, and follow any repository layout, so long as they're accompanied by a cargo-dist manifest file that provides information on how to build and install it. For more information, consult the documentation.</p>
+<ul>
+<li>docs
+<ul>
+<li><a href="https://opensource.axo.dev/cargo-dist/book/generic-builds.html" rel="noopener noreferrer">guide</a></li>
+<li><a href="https://github.com/axodotdev/axolotlsay-js" rel="noopener noreferrer">example npm project</a></li>
+<li><a href="https://github.com/axodotdev/cargo-dist-c-example" rel="noopener noreferrer">example C project</a></li>
+</ul>
+</li>
+<li>impl
+<ul>
+<li>@mistydemeo <a href="https://github.com/axodotdev/axoproject/pull/45" rel="noopener noreferrer">add generic project type</a></li>
+<li>@mistydemeo <a href="https://github.com/axodotdev/cargo-dist/pull/549" rel="noopener noreferrer">handle missing PackageId</a></li>
+<li>@mistydemeo <a href="https://github.com/axodotdev/cargo-dist/pull/553" rel="noopener noreferrer">implement generic builds</a></li>
+<li>@mistydemeo <a href="https://github.com/axodotdev/cargo-dist/pull/569" rel="noopener noreferrer">rebase fixup</a></li>
+<li>@mistydemeo <a href="https://github.com/axodotdev/cargo-dist/pull/570" rel="noopener noreferrer">print stdout from generic builds</a></li>
+<li>@mistydemeo <a href="https://github.com/axodotdev/cargo-dist/pull/573" rel="noopener noreferrer">fix --artifacts=global with generic builds</a></li>
+</ul>
+</li>
+</ul>
+<h3>MSI</h3>
+<p>We've contributed several upstream improvements to cargo-wix, the tool we use to build MSIs, and integrated
+that functionality back into cargo-dist.</p>
+<p>Where previously you needed to use cargo-wix CLI flags to set various images in your installers,
+they are now exposed in <code>[package.metadata.wix]</code> as well as <code>banner</code>, <code>dialog</code>, and <code>product-icon</code>.</p>
+<p>There are now also <code>eula</code> and <code>license</code> configs on <code>[package.metadata.wix]</code> that allow you to specify
+where to source the eula/license from, and also allow you to explicitly disable auto-eula/auto-license
+functionality with <code>eula = false</code> and <code>license = false</code>. <code>cargo dist init</code> will by default set those
+to false if it sees they aren't defined in <code>[package.metadata.wix]</code> yet, making things more well-behaved
+by default. To restore the old auto-eula behaviour, set them to <code>true</code>.</p>
+<p>In addition, significant refactoring was done to the eula/license backend of cargo-wix so that cargo-dist
+can properly understand when those files need to be auto-generated. Previously auto-generated licenses/eulas
+would just produce broken templates, because cargo-dist wouldn't know about them and get confused.</p>
+<ul>
+<li>docs
+<ul>
+<li><a href="https://volks73.github.io/cargo-wix/cargo_wix/#configuration" rel="noopener noreferrer">cargo-wix docs</a></li>
+<li><a href="https://opensource.axo.dev/cargo-dist/book/installers/msi.html" rel="noopener noreferrer">cargo-dist msi docs</a></li>
+</ul>
+</li>
+<li>impl
+<ul>
+<li>@gankra <a href="https://github.com/volks73/cargo-wix/pull/247" rel="noopener noreferrer">refactor eulas and add new config</a></li>
+<li>@gankra <a href="https://github.com/volks73/cargo-wix/pull/250" rel="noopener noreferrer">add config for setting installer images</a></li>
+<li>@gankra <a href="https://github.com/axodotdev/cargo-dist/pull/503" rel="noopener noreferrer">use new cargo-wix features</a></li>
+</ul>
+</li>
+</ul>
+<h3>Source Tarballs</h3>
+<p>cargo-dist will now generate its own source tarballs, and upload them to your release, named "source.tar.gz". The source tarballs that github provides are actually generated on demand with unspecified settings, so to ensure both Axo Releases and Github Releases have access to the same results, we need cargo-dist to generate the source tarball itself. We use the same mechanism as Github (asking git itself to generate them), but we can't bitwise-identically reproduce their (unspecified, technically-not-guaranteed) behaviour.</p>
+<ul>
+<li>@mistydemeo <a href="https://github.com/axodotdev/cargo-dist/pull/604" rel="noopener noreferrer">impl</a></li>
+</ul>
+<h2>Maintenance/Fixes</h2>
+<ul>
+<li>@rukai <a href="https://github.com/axodotdev/cargo-dist/pull/578" rel="noopener noreferrer">Remove rust-toolchain-version from the workspaces setup guide</a></li>
+<li>@jwodder <a href="https://github.com/axodotdev/cargo-dist/pull/557" rel="noopener noreferrer">Give "upload-local-artifacts" jobs friendlier display names</a></li>
+</ul>
+
+  </div>
+</section>
+    </div>
+  </div>
+
+        </main>
+      </div>
+
+      <footer>
+        
+          <a href="https://github.com/axodotdev/cargo-dist"><div class="github-icon" aria-hidden="true"></div></a>
+        
+        <span>
+          cargo-dist, MIT OR Apache-2.0
+        </span>
+      </footer>
+    </div>
+
+    
+      <script defer="true" data-domain="opensource.axo.dev" src="https://plausible.io/js/script.js"></script>
+    
+    
+
+    
+  </body>
+</html>
